@@ -13,6 +13,9 @@ const nextConfig = {
       'icpc.uclaacm.com',
       'cdn.discordapp.com',
       'i.ibb.co',
+      'josephcamyre.com',
+      'jcfp.site',
+      'photos.google.com',
     ],
   },
 };

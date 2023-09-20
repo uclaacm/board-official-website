@@ -88,7 +88,7 @@ const generateSingleEvent = ({
   }
 
   if (!banner) {
-    banner = '/favicon.svg';
+    banner = '/acm_logo.svg';
   } else if (banner.includes('drive.google.com')) {
     const fileID = banner.match(/\/file\/d\/(.+?)\//)[1];
     banner = `https://drive.google.com/uc?export=download&id=${fileID}`;
