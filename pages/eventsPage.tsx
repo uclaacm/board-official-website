@@ -51,25 +51,30 @@ export default function Events({ events }: Props): JSX.Element {
   //replace committee below
   const committee = vars.committee.toLowerCase();
 
-  const filteredEvents = indexedEvents.filter(
-    (event) => event.committee === committee,
-  );
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const todayUnixTime = Math.floor(now.getTime() / 1000);
 
-  if (committee === 'board') {
-    filteredEvents.shift();
-  }
+  //filter by committee and if event is upcoming
+  const filteredEvents = indexedEvents.filter((event) => {
+    return (
+      event.committee === committee &&
+      parseInt(event.start) / 1000 >= todayUnixTime
+    );
+  });
 
   return (
     <MainLayout>
       <div className={styles.main}>
         <h1 className={styles.title}>Events</h1>
-        {/* <p className={styles.description}>
-          Event descriptions Event descriptionsEvent descriptionsEvent
-          descriptionsEvent descriptionsEvent descriptions Event
-          descriptionsEvent descriptionsEvent descriptions
-        </p> */}
         <div>
           <h2 className={styles.subtitle}>Upcoming Events</h2>
+          {/* if there are no events, display a message */}
+          {filteredEvents.length === 0 && (
+            <div>
+              <h4 className={styles.message}>Stay tuned for more events!</h4>
+            </div>
+          )}
           {filteredEvents.map((event, index) => {
             const start = format(new Date(event.start), 'h:mma');
             const end = format(new Date(event.end), 'h:mma');
