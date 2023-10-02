@@ -16,6 +16,7 @@ const nextConfig = {
       'josephcamyre.com',
       'jcfp.site',
       'photos.google.com',
+      'photos.app.goo.gl'
     ],
   },
 };

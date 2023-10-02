@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import { GetStaticProps } from 'next';
 import React, { useState } from 'react';
 import EventCard from '../components/EventCard';
@@ -76,10 +77,14 @@ export default function Events({ events }: Props): JSX.Element {
             </div>
           )}
           {filteredEvents.map((event, index) => {
-            const start = format(new Date(event.start), 'h:mma');
-            const end = format(new Date(event.end), 'h:mma');
-            const startDate = format(new Date(event.start), 'E MMM d');
-            const endDate = format(new Date(event.end), 'E MMM d');
+            const timeZone = 'America/Los_Angeles'; // Set this to the appropriate time zone, e.g., PST
+            const zonedStart = utcToZonedTime(new Date(event.start), timeZone);
+            const zonedEnd = utcToZonedTime(new Date(event.end), timeZone);
+
+            const start = format(zonedStart, 'h:mma');
+            const end = format(zonedEnd, 'h:mma');
+            const startDate = format(zonedStart, 'E MMM d');
+            const endDate = format(zonedEnd, 'E MMM d');
             let time = start + ' - ' + end;
             {
               startDate === endDate
