@@ -5,7 +5,7 @@ import styles from '../styles/EventCard.module.scss';
 interface CardInterface {
   header: string;
   body: string;
-  time: string;
+  time: React.ReactNode;
   img: string;
 }
 function EventCard({ header, body, time, img }: CardInterface) {
