@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
 import { GetStaticProps } from 'next';
 import React, { useState } from 'react';
 import EventCard from '../components/EventCard';
@@ -22,22 +20,36 @@ interface Event {
   banner: string;
 }
 
-// interface EventClass {
-//   className?: string;
-// }
+interface LocalTimeProps {
+  start: string;
+  end: string;
+}
 
-// const getEventClassByEvent = (event: Event): EventClass => {
-//   if (!event) {
-//     return {};
-//   }
-//   let modifierStr = '';
-//   if (event.committee) {
-//     modifierStr = `rbc-override-${event.committee}`;
-//   }
-//   return ({
-//     className: `rbc-override-event ${modifierStr}`,
-//   });
-// };
+const LocalTimeDisplay: React.FC<LocalTimeProps> = ({ start, end }) => {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+
+  const formattedStartDate = startDate.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  const formattedEndTime = endDate.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
+  return (
+    <>
+      {formattedStartDate} - {formattedEndTime}
+    </>
+  );
+};
 
 interface Props {
   events: Event[];
@@ -77,28 +89,14 @@ export default function Events({ events }: Props): JSX.Element {
             </div>
           )}
           {filteredEvents.map((event, index) => {
-            const timeZone = 'America/Los_Angeles'; // Set this to the appropriate time zone, e.g., PST
-            const zonedStart = utcToZonedTime(new Date(event.start), timeZone);
-            const zonedEnd = utcToZonedTime(new Date(event.end), timeZone);
-
-            const start = format(zonedStart, 'h:mma');
-            const end = format(zonedEnd, 'h:mma');
-            const startDate = format(zonedStart, 'E MMM d');
-            const endDate = format(zonedEnd, 'E MMM d');
-            let time = start + ' - ' + end;
-            {
-              startDate === endDate
-                ? (time = startDate + ' ' + time)
-                : (time =
-                    startDate + ' ' + start + ' - ' + endDate + ' ' + end);
-            }
-
             return (
               <div key={index} className={styles.card}>
                 <EventCard
                   header={event.title}
                   body={event.description}
-                  time={time}
+                  time={
+                    <LocalTimeDisplay start={event.start} end={event.end} />
+                  }
                   img={event.banner}
                 />
               </div>
