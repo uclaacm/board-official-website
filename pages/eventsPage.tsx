@@ -28,6 +28,14 @@ interface LocalTimeProps {
 const LocalTimeDisplay: React.FC<LocalTimeProps> = ({ start, end }) => {
   const startDate = new Date(start);
   const endDate = new Date(end);
+  //eslint-disable-next-line
+  console.log('Local Start Time:', new Date(start).toLocaleString());
+  //eslint-disable-next-line
+  console.log('Local End Time:', new Date(end).toLocaleString());
+  //eslint-disable-next-line
+  console.log('UTC Start Time:', new Date(start).toUTCString());
+  //eslint-disable-next-line
+  console.log('UTC End Time:', new Date(end).toUTCString());
 
   const formattedStartDate = startDate.toLocaleString('en-US', {
     hour: 'numeric',
@@ -114,6 +122,8 @@ export const getStaticProps: GetStaticProps = async () => {
   // const processedEvents = events.map((event) => (
   //  {...event, description: <>{event.description.replace(/\n/g, '<br/>')}</>}));
   // console.log(processedEvents);
+  //eslint-disable-next-line
+  console.log('Raw Events Data:', events);
   for (const event of events) {
     event.banner = await event.banner;
   }
