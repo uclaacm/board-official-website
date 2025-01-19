@@ -76,6 +76,16 @@ export default function Events({ events }: Props): JSX.Element {
     );
   });
 
+  const uniqueEvents = Array.from(
+    // filters out identical events, ignoring "id" field
+    new Map(
+      filteredEvents.map((event) => [
+        JSON.stringify({ ...event, id: undefined }),
+        event,
+      ]),
+    ).values(),
+  );
+
   return (
     <MainLayout>
       <div className={styles.main}>
@@ -83,7 +93,7 @@ export default function Events({ events }: Props): JSX.Element {
         <div>
           <h2 className={styles.subtitle}>Upcoming Events</h2>
           {/* if there are no events, display a message */}
-          {filteredEvents.length === 0 && (
+          {uniqueEvents.length === 0 && (
             <div>
               <h4 className={styles.message}>Stay tuned for more events!</h4>
             </div>
